@@ -1,0 +1,10 @@
+Localstack reference link:
+                            https://lobster1234.github.io/2017/04/05/working-with-localstack-command-line/
+
+
+create s3 bucket. 
+            aws --endpoint-url=http://localhost:4572 s3 mb s3://unstructured-db
+
+create a queue:
+            aws --endpoint-url=http://localhost:4576 sqs create-queue --queue-name scrapperQ
+            

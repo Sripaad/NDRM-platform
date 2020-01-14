@@ -1,0 +1,25 @@
+version: "3"
+
+services:
+    localstack:
+        container_name: localstack-container
+        image: localstack/localstack
+        ports:
+            - 4572:4572
+        environment:
+            - SERVICES=s3:4572, sqs:4576, sns:4576
+            - HOSTNAME=localhost
+        networks:
+            - dockernet
+
+    scrapper:
+        container_name: scrapperapp
+        build: .
+        ports: 
+            - 5000:5000
+        depends_on: 
+            - localstack
+        networks: 
+            - dockernet
+networks: 
+    dockernet:
