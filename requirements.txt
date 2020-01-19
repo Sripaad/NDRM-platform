@@ -15,4 +15,3 @@ flask
 flask_restful
 awscli
 boto3
-logging 
