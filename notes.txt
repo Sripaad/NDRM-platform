@@ -8,3 +8,7 @@ create s3 bucket.
 create a queue:
             aws --endpoint-url=http://localhost:4576 sqs create-queue --queue-name scrapperQ
             
+
+
+just run this to debug 
+            docker run -it --entrypoint=/bin/bash ndrm-platform_scrapper

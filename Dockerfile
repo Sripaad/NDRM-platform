@@ -12,8 +12,6 @@ WORKDIR /app
 
 RUN pip3 install -r requirements.txt
 
-COPY . /
+ENTRYPOINT [ "/bin/bash" ]
 
-ENTRYPOINT [ "python3" ]
-
-CMD [ "app/app.py" ]
+#CMD [ "python3 app/app.py" ]

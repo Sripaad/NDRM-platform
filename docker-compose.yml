@@ -7,13 +7,15 @@ services:
         ports:
             - 4572:4572
         environment:
-            - SERVICES=s3:4572, sqs:4576, sns:4576
+            - SERVICES=s3:4572, sqs:4576, sns:4575
             - HOSTNAME=localhost
+            - AWS_ACCESS_KEY_ID=foobar
+            - AWS_SECRET_ACCESS_KEY=foobar
         networks:
             - dockernet
 
     scrapper:
-        container_name: scrapperapp
+        container_name: scrapper-container
         build: .
         volumes:
             - ./:/app
