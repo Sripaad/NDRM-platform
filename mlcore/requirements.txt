@@ -1,0 +1,14 @@
+jupyter
+matplotlib
+numpy
+pandas
+Keras
+scipy
+requests
+scikit-learn
+tensorflow
+regex
+spacy
+nltk
+Cython
+textwrap3

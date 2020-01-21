@@ -1,0 +1,6 @@
+twint
+flask
+flask_restful
+flask-classful
+awscli
+boto3
