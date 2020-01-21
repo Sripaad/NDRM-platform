@@ -8,7 +8,7 @@ services:
             - 4572:4572
         environment:
             - SERVICES=s3:4572, sqs:4576, sns:4575
-            - HOSTNAME=localhost
+            - SQS-DEFAULT_QUEUES= test-queue1,test-queue2
             - AWS_ACCESS_KEY_ID=foobar
             - AWS_SECRET_ACCESS_KEY=foobar
         networks:
@@ -16,7 +16,7 @@ services:
 
     scrapper:
         container_name: scrapper-container
-        build: .
+        build: ./scrapper
         volumes:
             - ./:/app
         ports: 
@@ -25,5 +25,41 @@ services:
             - localstack
         networks: 
             - dockernet
+    
+    mlcore:
+        container_name: mlcore-container
+        build: ./mlcore
+        volumes:
+            - ./:/app
+        ports:
+            - 6543:6543
+        depends_on: 
+            - localstack
+        networks: 
+            - dockernet
+    
+    dispatcher:
+        container_name: dispatcher-container
+        volumes:
+            - ./:/app
+        build: ./dispatcher
+        ports: 
+            - 7654:7654
+        depends_on: 
+            - localstack
+        networks: 
+            - dockernet
+    
+    frontend:
+        container_name: frontend-container
+        volumes:
+            - ./:/app
+        build: ./uiux
+        ports: 
+            - 4321:4321
+        depends_on: 
+            - localstack
+            - scrapper
+            - mlcore
 networks: 
     dockernet:
