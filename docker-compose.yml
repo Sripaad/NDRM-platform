@@ -5,12 +5,10 @@ services:
         container_name: localstack-container
         image: localstack/localstack
         ports:
-            - 4572:4572
+            - 4570-4577:4570-4577
+            - 8080:8080
         environment:
             - SERVICES=s3:4572, sqs:4576, sns:4575
-            - SQS-DEFAULT_QUEUES= test-queue1,test-queue2
-            - AWS_ACCESS_KEY_ID=foobar
-            - AWS_SECRET_ACCESS_KEY=foobar
         networks:
             - dockernet
 
@@ -18,9 +16,15 @@ services:
         container_name: scrapper-container
         build: ./scrapper
         volumes:
-            - ./:/app
+            - ./scrapper:/app
+            - ./scrapper/files:/app/files
         ports: 
             - 5000:5000
+        environment: 
+            - AWS_ACCESS_KEY_ID=foobar
+            - AWS_SECRET_ACCESS_KEY=foobar
+            - region=us-east-1
+            - output=json
         depends_on: 
             - localstack
         networks: 
@@ -30,36 +34,28 @@ services:
         container_name: mlcore-container
         build: ./mlcore
         volumes:
-            - ./:/app
+            - ./mlcore:/app
+            - ./mlcore/files:/app/files
         ports:
             - 6543:6543
         depends_on: 
             - localstack
         networks: 
             - dockernet
-    
-    dispatcher:
-        container_name: dispatcher-container
-        volumes:
-            - ./:/app
-        build: ./dispatcher
-        ports: 
-            - 7654:7654
-        depends_on: 
-            - localstack
-        networks: 
-            - dockernet
-    
+
     frontend:
         container_name: frontend-container
         volumes:
-            - ./:/app
-        build: ./uiux
+            - ./frontend:/app
+        build: ./frontend
         ports: 
-            - 4321:4321
+            - 4321:80
         depends_on: 
             - localstack
             - scrapper
             - mlcore
+        networks: 
+            - dockernet
 networks: 
     dockernet:
+        driver: bridge

@@ -12,3 +12,4 @@ spacy
 nltk
 Cython
 textwrap3
+flask

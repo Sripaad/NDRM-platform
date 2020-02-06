@@ -7,8 +7,16 @@ create s3 bucket.
 
 create a queue:
             aws --endpoint-url=http://localhost:4576 sqs create-queue --queue-name scrapperQ
-            
+list queue
+            aws --endpoint-url=http://localhost:4576 sqs list-queues
 
+send msg in queue
+            aws --endpoint-url=http://localhost:4576 sqs send-message --queue-url --message-body
+
+aws --endpoint-url=http://localstack-container:4575 sns publish  --topic-arn arn:aws:sns:us-east-1:000000000000:scrapperNotif --message 'Test Message!'
 
 just run this to debug 
             docker run -it --entrypoint=/bin/bash ndrm-platform_scrapper
+
+export AWS_ACCESS_KEY_ID=foobar
+export AWS_SECRET_ACCESS_KEY=foobar

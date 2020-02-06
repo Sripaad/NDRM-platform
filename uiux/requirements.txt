@@ -1,6 +1,0 @@
-Django
-djangorestframework
-packaging
-pyparsing
-pytz
-six
