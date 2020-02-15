@@ -5,16 +5,12 @@ import sys
 from flask import Flask, request, render_template
 
 app = Flask(__name__)
-hitCount = 0
-
+pd = pushData.Server()
+pd.awsConfigure()
 @app.route('/', methods=['GET', 'POST'])
 def Index():
     errors = []
     results = {}
-    if hitCount == 0:
-        pd = pushData.Server()
-        pd.awsConfigure()
-        hitCount+=1
     if request.method == "POST":
         # get keyword that the user has entered
         try:

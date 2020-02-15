@@ -13,3 +13,4 @@ nltk
 Cython
 textwrap3
 flask
+awscli
