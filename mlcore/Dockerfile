@@ -9,7 +9,7 @@ COPY . /app
 
 WORKDIR /app
 
-RUN pip3 install -r requirements.txt
+RUN pip3 install -r requirements.txt && python3 -m spacy download en
 
 ENTRYPOINT [ "python3" ]
 
