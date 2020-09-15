@@ -30,19 +30,18 @@ else:
 This is to make our lives easier.
 Here we're using the PhraseMatcher class from SpaCy to locate the text we want to label.
 '''
-label = 'GEOLOC'
+label = 'RESOURCE'
 matcher = PhraseMatcher(nlp.vocab)
-text = open('datasets/onlylocations.csv','r')
+text = open('datasets/resources.csv','r')
 for i in text:
     matcher.add(label, None,nlp(i))
-one = nlp('Chennai has been affected severly beacuse of the tsunami')
+one = nlp('Chennai has been affected severly because of the tsunami food, shelter and other resources required')
 matches = matcher(one)
 [match for match in matches]
 
 '''
 Gathering Training Data.
-Here the dataset contains tweets from the 2015_Nepal_Earthquake (taken from 
-https://crisisnlp.qcri.org/, originally a '.tsv' file it has been converted '.txt'. 
+Here the dataset contains tweets from twitter containing 5 keywords namely Water, Medical, Shelter(Blankets and Toiletaries), Food.
 '''
 res = []
 to_train_ents = []
@@ -67,4 +66,26 @@ with nlp.disable_pipes(*other_pipes):   # only train NER
         random.shuffle(to_train_ents)
         for item in to_train_ents:
             nlp.update([item[0]], [item[1]], sgd = optimizer, drop = 0.35, losses = losses)
-        
+
+'''
+Save the model
+'''
+output_dir = "/models"
+new_model_name = "newModelV1"
+if output_dir is not None:
+    output_dir = Path(output_dir)
+    if not output_dir.exists():
+        output_dir.mkdir()
+    nlp.meta['name'] = new_model_name  # rename model
+    nlp.to_disk(output_dir)
+    print("Saved model to", output_dir)
+
+'''
+Test the saved model
+'''
+
+print("Loading from", output_dir)
+    nlp2 = spacy.load(output_dir)
+    doc2 = nlp2(test_text)
+    for ent in doc2.ents:
+        print(ent.label_, ent.text)

@@ -3,6 +3,7 @@ import csv
 import sys
 import spacy 
 from spacy.matcher import PhraseMatcher
+import re
 
 def locationExtractor():
     
@@ -56,3 +57,30 @@ def tsv2csv(): # Useage python3 pythonUtilFns.py <inputFileName.tsv> <outputFile
     commaout = csv.writer(sys.stdout, dialect=csv.excel)
     for row in tabin:
       commaout.writerow(row)
+
+def preProcessor():
+    df = pd.read_csv('datasets/mergedFile.csv', error_bad_lines=False)
+    print(df.head())
+    tweets = df['tweet']
+    result_tweet = []
+    for tweet in tweets:
+        text = tweet
+        #removing links
+        result = re.sub('http\S+','', text)
+        result1 = re.sub('pic\S+','', result)
+        #removing #
+        result2 = re.sub('#\S+','',result)
+        #removing everything before < 
+        result3 = re.sub('^(.* <)',"", result2)
+        #removing @
+        result4 = re.sub('@\S+','',result3)
+        #removing emojis
+        RE_EMOJI = re.compile('[\U00010000-\U0010ffff]', flags=re.UNICODE)
+        word = RE_EMOJI.sub(r'', result4)
+        #appending in list
+        result_tweet.append(word)
+    d = {'tweet':result_tweet}
+    csv_df = pd.DataFrame(d)
+    csv_df.to_csv('cleaned_data.csv')
+    print("done")
+preProcessor()

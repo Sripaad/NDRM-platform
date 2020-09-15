@@ -1,7 +1,7 @@
 import re
 import pandas as pd
 
-df = pd.read_csv('data/cyclone.csv')
+df = pd.read_csv('datas/cyclone.csv')
 df.head()
 tweets = df['tweet']
 result_tweet = []
